@@ -1,23 +1,25 @@
 .root {
-
+    display: flex;
+    align-items: center;
 }
 
-.badge {
+.root .badge {
+    font-weight: 600;
+    right: .5rem;
+}
+
+.root .dot {
     font-weight: 600;
 }
 
-.dot {
-    font-weight: 600;
-}
-
-.primary {
+.root .primary {
    background: var(--primary-color);
 }
 
-.secondary {
+.root .secondary {
     background: var(--secondary-color);
 }
 
-.error {
+.root .error {
     background: var(--error-color);
 }

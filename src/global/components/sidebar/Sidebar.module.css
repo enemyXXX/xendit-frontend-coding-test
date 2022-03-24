@@ -1,0 +1,32 @@
+.wrapper {
+
+}
+
+.wrapper .root {
+    background: #111827;
+    color: white;
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+
+}
+
+.logoContainer {
+    margin: 1.5rem;
+}
+
+.contentWrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: .5rem 1rem 1.5rem;
+}
+
+.menuContainer {
+
+}
+
+.needHelpContainer {
+
+}

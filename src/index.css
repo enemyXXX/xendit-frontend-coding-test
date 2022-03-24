@@ -22,4 +22,6 @@ body {
   --button-small-padding: 6px 16px;
   --button-medium-padding: 8px 20px;
   --button-large-padding: 11px 24px;
+
+  --sidebar-width: 240px;
 }
