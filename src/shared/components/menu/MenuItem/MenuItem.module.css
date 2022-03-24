@@ -1,0 +1,25 @@
+.root {
+    background: rgba(255, 255, 255, 0.08);
+    padding: .5rem 1.25rem;
+    border-radius: var(--button-border-radius);
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+    font-size: var(--fontSize-sm);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-default-color);
+}
+
+.root:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.activeItem, .activeItem:hover {
+    color: var(--secondary-color);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.root + .root {
+    margin-top: .25rem;
+}

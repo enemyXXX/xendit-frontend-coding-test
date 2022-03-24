@@ -1,0 +1,19 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.infoWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: var(--fontSize-sm);
+}
+
+.description {
+    font-size: var(--fontSize-sm);
+    color: var(--text-default-color);
+}

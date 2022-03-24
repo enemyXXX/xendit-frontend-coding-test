@@ -24,4 +24,18 @@ body {
   --button-large-padding: 11px 24px;
 
   --sidebar-width: 240px;
+
+  --text-default-color: #9CA3AF;
+  --text-default-hover: #7a7d85;
+
+  --fontSize-6xl: 4rem;
+  --fontSize-5xl: 3rem;
+  --fontSize-4xl: 2.5rem;
+  --fontSize-3xl: 2rem;
+  --fontSize-2xl: 1.5rem;
+  --fontSize-xl: 1.25rem;
+  --fontSize-lg: 1.125rem;
+  --fontSize-base: 1rem;
+  --fontSize-sm: 0.875rem;
+  --fontSize-xs: 0.75rem;
 }

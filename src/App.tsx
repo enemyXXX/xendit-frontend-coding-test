@@ -4,6 +4,8 @@ import { ROUTES } from './shared/enums/routes';
 import Sidebar from './global/components/sidebar/Sidebar';
 import styles from './App.module.css';
 import TopBar from './global/components/topbar/Topbar';
+import MainPage from './pages/main/MainPage';
+import InstructionsPage from './pages/instruction/InstructionsPage';
 
 const App: React.FC = () => {
   return (
@@ -13,7 +15,8 @@ const App: React.FC = () => {
         <Sidebar />
         <Routes>
           <Route path={ROUTES.DEFAULT} element={<Navigate replace to={ROUTES.HOME} />} />
-          <Route path={ROUTES.HOME} element={<>123</>} />
+          <Route path={ROUTES.HOME} element={<MainPage />} />
+          <Route path={ROUTES.INSTRUCTION} element={<InstructionsPage />} />
           <Route path={ROUTES.ANY} element={<Navigate replace to={ROUTES.HOME} />} />
         </Routes>
       </BrowserRouter>

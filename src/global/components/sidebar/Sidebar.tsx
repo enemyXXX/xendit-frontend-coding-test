@@ -2,10 +2,10 @@ import React from 'react';
 import { Drawer } from '@mui/material';
 import styles from './Sidebar.module.css';
 import Logo from '../../../shared/assets/Logo';
+import NeedHelp from '../../../shared/components/needHelp/NeedHelp';
+import Menu from '../menu/Menu';
 
-interface SideBarProps {}
-
-const Sidebar: React.FC<SideBarProps> = ({}) => {
+const Sidebar: React.FC = () => {
   return (
     <Drawer
       classes={{
@@ -19,8 +19,8 @@ const Sidebar: React.FC<SideBarProps> = ({}) => {
         <Logo />
       </div>
       <div className={styles.contentWrapper}>
-        <div className={styles.menuContainer}>123</div>
-        <div className={styles.needHelpContainer}>456</div>
+        <Menu />
+        <NeedHelp />
       </div>
     </Drawer>
   );
