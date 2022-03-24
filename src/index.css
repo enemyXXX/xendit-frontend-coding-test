@@ -5,3 +5,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+:root {
+  --badge-primary-color: #5048E5;
+  --badge-secondary-color: #10B981;
+  --badge-error-color: #D14343;
+}

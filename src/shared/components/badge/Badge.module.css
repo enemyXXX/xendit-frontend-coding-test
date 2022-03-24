@@ -1,0 +1,23 @@
+.root {
+
+}
+
+.badge {
+    font-weight: 600;
+}
+
+.dot {
+    font-weight: 600;
+}
+
+.primary {
+   background: var(--badge-primary-color);
+}
+
+.secondary {
+    background: var(--badge-secondary-color);
+}
+
+.error {
+    background: var(--badge-error-color);
+}
