@@ -11,13 +11,13 @@
 }
 
 .primary {
-   background: var(--badge-primary-color);
+   background: var(--primary-color);
 }
 
 .secondary {
-    background: var(--badge-secondary-color);
+    background: var(--secondary-color);
 }
 
 .error {
-    background: var(--badge-error-color);
+    background: var(--error-color);
 }

@@ -7,7 +7,19 @@ body {
 }
 
 :root {
-  --badge-primary-color: #5048E5;
-  --badge-secondary-color: #10B981;
-  --badge-error-color: #D14343;
+  --primary-color: #5048E5;
+  --primary-hover-color: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), #5048E5;
+  --primary-outline-hover-color: rgba(80, 72, 229, 0.08);
+  --primary-text-hover-color: rgba(80, 72, 229, 0.08);
+  --secondary-color: #10B981;
+  --secondary-hover-color: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), #10B981;
+  --secondary-outline-hover-color: rgba(16, 185, 129, 0.08);
+  --secondary-text-hover-color: rgba(80, 72, 229, 0.08);
+  --error-color: #D14343;
+  --disabled-color: #3741517A;
+  --disabled-background: rgba(55, 65, 81, 0.12);
+  --button-border-radius: .5rem;
+  --button-small-padding: 6px 16px;
+  --button-medium-padding: 8px 20px;
+  --button-large-padding: 11px 24px;
 }

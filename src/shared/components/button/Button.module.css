@@ -1,0 +1,70 @@
+.root {
+    border-radius: var(--button-border-radius);
+}
+
+.root:disabled {
+    color: var(--disabled-color) !important;
+    background: var(--disabled-background) !important;
+}
+
+.root.containedPrimary {
+    background: var(--primary-color);
+}
+
+.root.containedPrimary:hover {
+    background: var(--primary-hover-color);
+}
+
+.root.outlinedPrimary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.root.outlinedPrimary:hover {
+    background: var(--primary-outline-hover-color);
+}
+
+.root.textPrimary {
+    color: var(--primary-color);
+}
+
+.root.textPrimary:hover {
+    background: var(--primary-text-hover-color);
+}
+
+.root.containedSecondary {
+    background: var(--secondary-color);
+}
+
+.root.containedSecondary:hover {
+    background: var(--secondary-hover-color);
+}
+
+.root.outlinedSecondary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.root.outlinedSecondary:hover {
+    background: var(--secondary-outline-hover-color);
+}
+
+.root.textSecondary {
+    color: var(--secondary-color);
+}
+
+.root.textSecondary:hover {
+    background: var(--secondary-text-hover-color);
+}
+
+.root.large {
+    padding: var(--button-large-padding);
+}
+
+.root.medium {
+    padding: var(--button-medium-padding);
+}
+
+.root.small {
+    padding: var(--button-small-padding);
+}
