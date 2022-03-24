@@ -1,0 +1,50 @@
+.alert {
+    padding: .5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: .25rem;
+}
+
+.alert > * {
+    font-weight: 600;
+}
+
+.title {
+    font-weight: 500;
+}
+
+.alertDescription {
+    font-weight: 400;
+}
+
+.actionsContainer {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+
+.successAlert {
+    color: #254B42;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #14B8A6;
+}
+
+.errorAlert {
+    color: #541B1B;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #D14343;;
+}
+
+.warningAlert {
+    color: #66460D;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #FFB020;
+}
+
+.infoAlert {
+    color: #284963;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #64B6F7;}
+
+
+.alertMessage {
+    padding: 0;
+}
