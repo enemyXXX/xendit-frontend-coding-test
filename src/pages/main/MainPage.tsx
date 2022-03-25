@@ -232,7 +232,7 @@ const MainPage: React.FC = () => {
           rowsPerPageOptions={[5, 10, 15]}
           checkboxSelection
           onPageSizeChange={(pageSize) => setRowsState((prev) => ({ ...prev, pageSize }))}
-          onPageChange={(page) => setRowsState((prev) => ({ ...prev, page }))}
+          onPageChange={(page) => setRowsState((prev) => ({ ...prev, page: page + 1 }))}
           disableSelectionOnClick
           paginationMode={'server'}
         />
