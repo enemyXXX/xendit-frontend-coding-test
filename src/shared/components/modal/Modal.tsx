@@ -12,7 +12,6 @@ interface CustomModalProps {
 }
 
 export interface ModalTitleProps {
-  id: string;
   children?: React.ReactNode;
   onClose: () => void;
 }
@@ -68,9 +67,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ content, revert, title, handl
 
   return (
     <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={true}>
-      <ModalTitle id="dialog-title" onClose={handleClose}>
-        {title}
-      </ModalTitle>
+      <ModalTitle onClose={handleClose}>{title}</ModalTitle>
       <DialogContent className={styles.contentContainer}>
         {content}
         {actions}
@@ -79,4 +76,4 @@ const CustomModal: React.FC<CustomModalProps> = ({ content, revert, title, handl
   );
 };
 
-export default CustomModal;
+export default React.memo(CustomModal);

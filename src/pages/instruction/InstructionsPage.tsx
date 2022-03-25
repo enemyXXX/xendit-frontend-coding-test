@@ -1,8 +1,12 @@
 import React from 'react';
-import styles from './InstructionsPage.module.css';
+import PageHeader from '../../shared/page/PageHeader';
 
 const InstructionsPage: React.FC = () => {
-  return <div className={styles.root}>instructions page</div>;
+  return (
+    <>
+      <PageHeader title={'Instructions'} />
+    </>
+  );
 };
 
 export default InstructionsPage;

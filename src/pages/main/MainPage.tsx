@@ -2,11 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styles from './MainPage.module.css';
 import { useAppSelector } from '../../shared/hooks/useAppSelector';
 import {
-  getCountries,
+  deleteUniversityAsync,
+  getCountriesAsync,
   getCountriesList,
   getIsUniversitiesLoading,
-  getUniversities,
+  getUniversitiesAsync,
   getUniversitiesList,
+  saveUniversityAsync,
 } from './services/mainSlice';
 import { useAppDispatch } from '../../shared/hooks/useAppDispatch';
 import { universityTableColumns } from '../../shared/tableColumns/universityTableColumns';
@@ -60,8 +62,12 @@ const MainPage: React.FC = () => {
     return () => clearTimeout(searchDelay);
   }, [search, rowsState]);
 
+  const updateTableData = (rowsState: RowsState) => {
+    dispatch(getUniversitiesAsync(rowsState));
+  };
+
   useEffect(() => {
-    dispatch(getUniversities(rowsState));
+    updateTableData(rowsState);
   }, [rowsState]);
 
   const columns: GridColDef[] = [
@@ -101,7 +107,7 @@ const MainPage: React.FC = () => {
   const handleCountriesLoading = (page: number) => {
     if (page > countries.pagination.current_page) {
       dispatch(
-        getCountries({
+        getCountriesAsync({
           page,
           pageSize: PER_PAGE,
         })
@@ -116,16 +122,28 @@ const MainPage: React.FC = () => {
 
   const handleDeleteUniversity = () => {
     if (selectedRow) {
-      console.log('delete');
+      dispatch(
+        deleteUniversityAsync({
+          id: selectedRow.id,
+          callback: (success: boolean) => {
+            updateTableData(rowsState);
+            success && setUniversityDeleteModalOpened(false);
+          },
+        })
+      );
     }
   };
 
-  const handleSaveUpdatedUniversity = (university: UniversityModel) => {
-    if (university.id) {
-      console.log('update');
-    } else {
-      console.log('save');
-    }
+  const handleSaveUpdatedUniversity = (university: UniversityModel, callback: (success: boolean) => void) => {
+    dispatch(
+      saveUniversityAsync({
+        university,
+        callback: (success: boolean) => {
+          callback(success);
+          updateTableData(rowsState);
+        },
+      })
+    );
   };
 
   const handleAddNewUniversity = () => {
@@ -160,6 +178,7 @@ const MainPage: React.FC = () => {
             }}
           />
           <LazyLoadingSelect
+            label={'Country'}
             name={'country'}
             value={rowsState.country}
             handleLazyLoading={handleCountriesLoading}
@@ -195,6 +214,7 @@ const MainPage: React.FC = () => {
           </FormControl>
         </div>
         <DataGrid
+          className={styles.dataTable}
           rows={universities.data}
           sortModel={[
             {

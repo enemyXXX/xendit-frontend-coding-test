@@ -8,29 +8,37 @@ import { Box, TextField } from '@mui/material';
 import { useAppDispatch } from '../../../../shared/hooks/useAppDispatch';
 import { CountriesList } from '../../../../shared/models/countryModel';
 import { useAppSelector } from '../../../../shared/hooks/useAppSelector';
-import { getCountries, getCountriesList } from '../../services/mainSlice';
+import { getCountriesAsync, getCreateEditCountries } from '../../services/mainSlice';
 import { PER_PAGE } from '../../../../global/constants/pagination';
 import LazyLoadingSelect from '../../../../shared/components/select/LazyLoadingSelect';
 
 interface UniversityCreateEditFormProps {
   university: UniversityModel;
   handleClose: () => void;
-  handleSave: (university: UniversityModel) => void;
+  handleSave: (university: UniversityModel, callback: (success: boolean) => void) => void;
 }
 
 const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ university, handleClose, handleSave }) => {
   const [universityItem, setUniversityItem] = useState<UniversityModel>(university);
+  const [isActiveUniversityProcess, setIsActiveUniversityProcess] = useState<boolean>(false);
   const isSaveDisable: boolean = useMemo(() => !universityItem.name || !universityItem.country, [universityItem]);
+
   const handleSaveValidation = () => {
-    handleSave(universityItem);
+    setIsActiveUniversityProcess(true);
+    handleSave(universityItem, (success: boolean) => {
+      success && handleClose();
+      setIsActiveUniversityProcess(false);
+    });
   };
+
   const dispatch = useAppDispatch();
-  const countries: CountriesList = useAppSelector(getCountriesList);
+  const countries: CountriesList = useAppSelector(getCreateEditCountries);
 
   const handleCountriesLoading = (page: number) => {
     if (page > countries.pagination.current_page) {
       dispatch(
-        getCountries({
+        getCountriesAsync({
+          editMode: true,
           page,
           pageSize: PER_PAGE,
         })
@@ -42,14 +50,7 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
     <>
       <div className={styles.root}>
         <FormTitle title={university.id ? 'Edit' : 'Create new university'} />
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-          }}
-          noValidate
-          autoComplete="off"
-        >
+        <Box component="form" noValidate autoComplete="off">
           <div className={styles.fields}>
             <TextField
               value={universityItem.name}
@@ -63,6 +64,8 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
               label="Name"
             />
             <LazyLoadingSelect
+              label={'Country *'}
+              required
               name={'countries'}
               value={universityItem.country}
               handleLazyLoading={handleCountriesLoading}
@@ -78,21 +81,21 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
               fieldValue={'name'}
             />
             <TextField
-              value={universityItem.domains[0]}
+              value={universityItem.domains.join(',')}
               onChange={(e) =>
                 setUniversityItem((prev) => ({
                   ...prev,
-                  domains: [e.target.value as string],
+                  domains: (e.target.value as string).split(','),
                 }))
               }
               label="Domain"
             />
             <TextField
-              value={universityItem.web_pages[0]}
+              value={universityItem.web_pages.join(',')}
               onChange={(e) =>
                 setUniversityItem((prev) => ({
                   ...prev,
-                  web_pages: [e.target.value as string],
+                  web_pages: (e.target.value as string).split(','),
                 }))
               }
               label="Web Pages"
@@ -103,6 +106,7 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
       <ModalActions>
         <ButtonItem
           disabled={isSaveDisable}
+          loading={isActiveUniversityProcess}
           handleClick={handleSaveValidation}
           variant={'contained'}
           size={'small'}

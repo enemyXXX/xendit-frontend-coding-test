@@ -1,5 +1,6 @@
 .root {
     height: 100%;
+    position: relative;
 }
 
 .filters {
@@ -13,11 +14,10 @@
     min-width: 10rem;
 }
 
-.selectMenu {
-    background: red !important;
-}
-
 .search {
     flex: 1;
 }
 
+.dataTable {
+ height: calc(100% - 180px) !important;
+}

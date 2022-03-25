@@ -8,6 +8,7 @@ import { PaginationModel } from '../../models/paginationModel';
 interface LazyLoadingSelectProps {
   name: string;
   value: string;
+  label: string;
   handleLazyLoading: (page: number) => void;
   pagination: PaginationModel;
   handleValueSelection: (value: string) => void;
@@ -19,6 +20,7 @@ interface LazyLoadingSelectProps {
 
 const LazyLoadingSelect: React.FC<LazyLoadingSelectProps> = ({
   name,
+  label,
   value,
   handleLazyLoading,
   pagination,
@@ -30,7 +32,7 @@ const LazyLoadingSelect: React.FC<LazyLoadingSelectProps> = ({
 }) => {
   return (
     <FormControl>
-      {!value && <InputLabel id={`${name}-select-label`}>Country</InputLabel>}
+      {!value && <InputLabel id={`${name}-select-label`}>{label}</InputLabel>}
       <Select
         required={required}
         className={styles.select}

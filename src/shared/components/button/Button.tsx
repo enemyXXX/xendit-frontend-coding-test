@@ -6,7 +6,7 @@ import {
   ButtonPropsSizeOverrides,
   ButtonPropsVariantOverrides,
 } from '@mui/material/Button/Button';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { Position } from '../../types/position';
 import { POSITION } from '../../enums/global';
 import classNames from 'classnames';
@@ -25,6 +25,7 @@ interface ButtonProps {
   children?: React.ReactNode;
   fullWidth?: boolean;
   stylesWrapper?: string;
+  loading?: boolean;
 }
 
 const ButtonItem: React.FC<ButtonProps> = ({
@@ -38,6 +39,7 @@ const ButtonItem: React.FC<ButtonProps> = ({
   handleClick,
   fullWidth,
   stylesWrapper,
+  loading,
 }) => {
   return (
     <Button
@@ -58,9 +60,9 @@ const ButtonItem: React.FC<ButtonProps> = ({
       color={color}
       variant={variant}
       size={size}
-      startIcon={iconPosition !== POSITION.RIGHT && icon}
+      startIcon={loading ? <CircularProgress size={14} /> : iconPosition !== POSITION.RIGHT && icon}
       endIcon={iconPosition === POSITION.RIGHT && icon}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {children}
     </Button>
