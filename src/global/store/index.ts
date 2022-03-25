@@ -1,7 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import MainReducer from '../../pages/main/services/mainSlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    main: MainReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

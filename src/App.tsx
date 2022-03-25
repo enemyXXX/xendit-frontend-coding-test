@@ -6,6 +6,8 @@ import styles from './App.module.css';
 import TopBar from './global/components/topbar/Topbar';
 import MainPage from './pages/main/MainPage';
 import InstructionsPage from './pages/instruction/InstructionsPage';
+import { Box } from '@mui/material';
+import { TOP_NAVBAR_WIDTH } from './global/constants/content';
 
 const App: React.FC = () => {
   return (
@@ -13,12 +15,18 @@ const App: React.FC = () => {
       <BrowserRouter>
         <TopBar />
         <Sidebar />
-        <Routes>
-          <Route path={ROUTES.DEFAULT} element={<Navigate replace to={ROUTES.HOME} />} />
-          <Route path={ROUTES.HOME} element={<MainPage />} />
-          <Route path={ROUTES.INSTRUCTION} element={<InstructionsPage />} />
-          <Route path={ROUTES.ANY} element={<Navigate replace to={ROUTES.HOME} />} />
-        </Routes>
+        <Box
+          className={styles.contentContainer}
+          component="main"
+          sx={{ flexGrow: 1, flex: 1, mt: `${TOP_NAVBAR_WIDTH}px` }}
+        >
+          <Routes>
+            <Route path={ROUTES.DEFAULT} element={<Navigate replace to={ROUTES.HOME} />} />
+            <Route path={ROUTES.HOME} element={<MainPage />} />
+            <Route path={ROUTES.INSTRUCTION} element={<InstructionsPage />} />
+            <Route path={ROUTES.ANY} element={<Navigate replace to={ROUTES.HOME} />} />
+          </Routes>
+        </Box>
       </BrowserRouter>
     </div>
   );

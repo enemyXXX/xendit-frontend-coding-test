@@ -7,15 +7,15 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import BadgeItem from '../../../shared/components/badge/Badge';
+import { SIDE_NAVBAR_WIDTH } from '../../constants/content';
 
-interface TopBarProps {}
-
-const TopBar: React.FC<TopBarProps> = ({}) => {
+const TopBar: React.FC = () => {
   return (
     <AppBar
       classes={{
         root: styles.root,
       }}
+      sx={{ width: `calc(100% - ${SIDE_NAVBAR_WIDTH}px)`, ml: `${SIDE_NAVBAR_WIDTH}px` }}
       className={styles.wrapper}
       position={'fixed'}
     >
