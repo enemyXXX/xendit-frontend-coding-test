@@ -13,6 +13,14 @@
     min-width: 10rem;
 }
 
+.selectMenu {
+    background: red !important;
+}
+
 .search {
     flex: 1;
+}
+
+.loadMoreBtn {
+    margin-left: 1rem !important;
 }

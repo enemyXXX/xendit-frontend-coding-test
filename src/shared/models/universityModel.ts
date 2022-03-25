@@ -1,3 +1,5 @@
+import { PaginationModel } from './paginationModel';
+
 export type UniversityModel = {
   alpha_two_code: string;
   country: string;
@@ -7,4 +9,10 @@ export type UniversityModel = {
   name: string;
   state_province?: string;
   updated_at: Date;
+  web_pages: string[];
+};
+
+export type UniversitiesList = {
+  data: UniversityModel[];
+  pagination: PaginationModel;
 };

@@ -1,0 +1,17 @@
+.infoRow {
+    display: flex;
+    font-size: var(--fontSize-sm);
+    padding: 1rem 0;
+}
+
+.rowLabel {
+    flex-basis: 30%;
+    color: #111827;
+    font-weight: 500;
+
+}
+
+.rowValue {
+    flex-basis: 70%;
+    color: #6B7280;
+}

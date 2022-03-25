@@ -1,0 +1,33 @@
+.title {
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--fontSize-lg);
+    font-weight: 600;
+}
+
+.contentContainer {
+    padding-top: 2rem !important;
+}
+
+.content {
+
+}
+
+.actions {
+    display: flex;
+    background: #F3F4F6;
+    color: #6B7280;
+    border-radius: .5rem;
+    font-size: var(--fontSize-xs);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.actionButtons {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}

@@ -9,6 +9,7 @@ import {
 import { Button } from '@mui/material';
 import { Position } from '../../types/position';
 import { POSITION } from '../../enums/global';
+import classNames from 'classnames';
 
 interface ButtonProps {
   variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
@@ -18,10 +19,12 @@ interface ButtonProps {
   >;
   size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides>;
   disabled?: boolean;
-  handleClick?: () => void;
+  handleClick?: (e) => void;
   icon?: React.ReactNode;
   iconPosition?: Position;
   children?: React.ReactNode;
+  fullWidth?: boolean;
+  stylesWrapper?: string;
 }
 
 const ButtonItem: React.FC<ButtonProps> = ({
@@ -33,9 +36,12 @@ const ButtonItem: React.FC<ButtonProps> = ({
   color = 'primary',
   children,
   handleClick,
+  fullWidth,
+  stylesWrapper,
 }) => {
   return (
     <Button
+      fullWidth={fullWidth}
       classes={{
         containedPrimary: styles.containedPrimary,
         containedSecondary: styles.containedSecondary,
@@ -48,7 +54,7 @@ const ButtonItem: React.FC<ButtonProps> = ({
         sizeSmall: styles.small,
       }}
       onClick={handleClick}
-      className={styles.root}
+      className={classNames(styles.root, stylesWrapper)}
       color={color}
       variant={variant}
       size={size}

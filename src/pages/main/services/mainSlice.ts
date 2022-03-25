@@ -2,18 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../../global/store';
 import { MainEndpoints } from '../../../global/constants/endpoints';
-import { CountryModel } from '../../../shared/models/countryModel';
+import { CountriesList } from '../../../shared/models/countryModel';
 import { PaginationModel } from '../../../shared/models/paginationModel';
 import { initialPaginationModel } from '../../../global/constants/pagination';
-import { UniversityModel } from '../../../shared/models/universityModel';
+import { UniversitiesList } from '../../../shared/models/universityModel';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 export interface MainState {
-  countries: { data: CountryModel[]; pagination: PaginationModel };
+  countries: CountriesList;
   isCountriesLoading: boolean;
   isCountriesLoaded: boolean;
 
-  universities: { data: UniversityModel[]; pagination: PaginationModel };
+  universities: UniversitiesList;
   isUniversitiesLoading: boolean;
   isUniversitiesLoaded: boolean;
 }
@@ -28,9 +28,17 @@ const initialState: MainState = {
   isUniversitiesLoaded: false,
 };
 
-export const getCountries = createAsyncThunk('main/getCountries', async () => {
+interface getCountriesData {
+  page: number;
+  pageSize: number;
+}
+
+export const getCountries = createAsyncThunk('main/getCountries', async (props: getCountriesData) => {
   try {
-    const { data } = await axios.get(MainEndpoints.GET_COUNTRIES_ENDPOINT);
+    const { page, pageSize } = props;
+    const { data } = await axios.get(
+      MainEndpoints.GET_COUNTRIES_ENDPOINT.replace('{page}', String(page)).replace('{limit}', String(pageSize))
+    );
     return {
       data: data.data,
       pagination: {
@@ -40,8 +48,8 @@ export const getCountries = createAsyncThunk('main/getCountries', async () => {
         last_page: data.last_page,
         to: data.to,
         total: data.total,
-      } as PaginationModel,
-    };
+      },
+    } as CountriesList;
   } catch (err) {
     console.log(err);
   }
@@ -83,7 +91,7 @@ export const getUniversities = createAsyncThunk('main/getUniversities', async (p
         to: data.to,
         total: data.total,
       } as PaginationModel,
-    };
+    } as UniversitiesList;
   } catch (err) {
     console.log(err);
   }
@@ -100,7 +108,10 @@ export const mainSlice = createSlice({
         state.isCountriesLoaded = false;
       })
       .addCase(getCountries.fulfilled, (state, action) => {
-        state.countries = action.payload!;
+        state.countries = {
+          data: [...state.countries.data, ...(action.payload?.data || [])],
+          pagination: action.payload?.pagination || initialPaginationModel,
+        };
         state.isCountriesLoading = false;
         state.isCountriesLoaded = true;
       })
