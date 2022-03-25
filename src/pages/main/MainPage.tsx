@@ -4,7 +4,6 @@ import { useAppSelector } from '../../shared/hooks/useAppSelector';
 import {
   getCountries,
   getCountriesList,
-  getIsCountriesLoading,
   getIsUniversitiesLoading,
   getUniversities,
   getUniversitiesList,
@@ -18,12 +17,17 @@ import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, TextFiel
 import { MoreVert, Search } from '@mui/icons-material';
 import { UniversitiesList, UniversityModel } from '../../shared/models/universityModel';
 import { Select } from '@material-ui/core';
-import { CountriesList, CountryModel } from '../../shared/models/countryModel';
+import { CountriesList } from '../../shared/models/countryModel';
 import ButtonItem from '../../shared/components/button/Button';
 import CustomModal, { ModalActions } from '../../shared/components/modal/Modal';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UniversityDetailsInformation from './forms/details/UniversityDetailsInformation';
+import UniversityCreateEditForm from './forms/createEdit/UniversityCreateEditForm';
+import PageHeader from '../../shared/page/PageHeader';
+import AddIcon from '@mui/icons-material/Add';
+import { initialUniversityValue } from './forms/createEdit/university-values';
+import LazyLoadingSelect from '../../shared/components/select/LazyLoadingSelect';
 
 const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -124,9 +128,22 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const handleAddNewUniversity = () => {
+    setUniversityCreateEditModalOpened(true);
+    setSelectedRow(initialUniversityValue);
+  };
+
   return (
     <>
       <div className={styles.root}>
+        <PageHeader
+          title={'Universities'}
+          actions={
+            <ButtonItem size={'large'} handleClick={handleAddNewUniversity} icon={<AddIcon />}>
+              Add
+            </ButtonItem>
+          }
+        />
         <div className={styles.filters}>
           <TextField
             className={styles.search}
@@ -142,48 +159,16 @@ const MainPage: React.FC = () => {
               ),
             }}
           />
-          <FormControl>
-            {!rowsState.country && <InputLabel id="country-select-label">Country</InputLabel>}
-            <Select
-              className={styles.select}
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    width: 250,
-                  },
-                },
-              }}
-              variant={'outlined'}
-              labelId="country-select-label"
-              id="country-select"
-              value={rowsState.country}
-              onOpen={() => handleCountriesLoading(1)}
-              onChange={(event) => {
-                handleCountrySelection(event.target.value as string);
-              }}
-            >
-              <MenuItem value="">None</MenuItem>
-              {countries.data.map((country: CountryModel) => (
-                <MenuItem key={country.id} value={country.name}>
-                  {country.name}
-                </MenuItem>
-              ))}
-              <ButtonItem
-                handleClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  handleCountriesLoading(countries.pagination.current_page + 1);
-                }}
-                fullWidth
-                stylesWrapper={styles.loadMoreBtn}
-                variant={'contained'}
-                size={'medium'}
-                disabled={countries.pagination.current_page === countries.pagination.last_page}
-              >
-                Load more
-              </ButtonItem>
-            </Select>
-          </FormControl>
+          <LazyLoadingSelect
+            name={'country'}
+            value={rowsState.country}
+            handleLazyLoading={handleCountriesLoading}
+            pagination={countries.pagination}
+            handleValueSelection={handleCountrySelection}
+            items={countries.data}
+            fieldLabel={'name'}
+            fieldValue={'name'}
+          />
           <FormControl>
             <InputLabel id="sort-select-label">Sort</InputLabel>
             <Select
@@ -283,7 +268,7 @@ const MainPage: React.FC = () => {
                 handleClick={handleDeleteUniversity}
                 icon={<DeleteIcon />}
                 variant={'text'}
-                size={'medium'}
+                size={'small'}
                 color={'error'}
               >
                 Delete
@@ -297,23 +282,11 @@ const MainPage: React.FC = () => {
         <CustomModal
           title={selectedRow.id ? 'Edit' : 'Create'}
           content={
-            <Typography>
-              Do you really want to delete the <strong>{selectedRow?.name}</strong>? You have no chance to rollback your
-              changes
-            </Typography>
-          }
-          actions={
-            <ModalActions>
-              <ButtonItem
-                handleClick={handleDeleteUniversity}
-                icon={<DeleteIcon />}
-                variant={'text'}
-                size={'medium'}
-                color={'error'}
-              >
-                Delete
-              </ButtonItem>
-            </ModalActions>
+            <UniversityCreateEditForm
+              handleSave={handleSaveUpdatedUniversity}
+              handleClose={() => setUniversityCreateEditModalOpened(false)}
+              university={selectedRow}
+            />
           }
           handleClose={() => setUniversityCreateEditModalOpened(false)}
         />

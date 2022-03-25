@@ -1,0 +1,15 @@
+.root {
+
+}
+
+.fields {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.fields > div {
+    width: 100% !important;
+    margin: 0 !important;
+}

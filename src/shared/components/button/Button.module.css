@@ -1,5 +1,5 @@
 .root {
-    border-radius: var(--button-border-radius);
+    border-radius: var(--button-border-radius) !important;
 }
 
 .root:disabled {

@@ -55,7 +55,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ content, revert, title, handl
     },
     '& .MuiDialogActions-root': {
       justifyContent: 'space-between',
-      padding: theme.spacing(1.5, 0.5, 1.5, 2),
+      padding: theme.spacing(1.5, 2, 1.5, 2),
     },
     '& .MuiDialog-paper': {
       borderRadius: 0,

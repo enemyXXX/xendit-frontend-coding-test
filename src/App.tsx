@@ -8,6 +8,8 @@ import MainPage from './pages/main/MainPage';
 import InstructionsPage from './pages/instruction/InstructionsPage';
 import { Box } from '@mui/material';
 import { TOP_NAVBAR_WIDTH } from './global/constants/content';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +30,15 @@ const App: React.FC = () => {
           </Routes>
         </Box>
       </BrowserRouter>
+      <ToastContainer
+        autoClose={5000}
+        hideProgressBar
+        draggable
+        theme={'colored'}
+        draggableDirection={'y'}
+        draggablePercent={60}
+        pauseOnHover={false}
+      />
     </div>
   );
 };
