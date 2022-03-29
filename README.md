@@ -1,7 +1,5 @@
 # Coding Exercise
 
-### The goal of this exercise is to assess your proficiency in frontend engineering that is related to the daily work. Please follow the instructions below to complete the assessment.
-
 
 # The project uses
 * React.js v.17.0.2 + TypeScript v.4.4.3
