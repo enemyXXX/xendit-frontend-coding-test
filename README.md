@@ -1,6 +1,3 @@
-# Coding Exercise
-
-
 # The project uses
 * React.js v.17.0.2 + TypeScript v.4.4.3
 * Redux Toolkit
