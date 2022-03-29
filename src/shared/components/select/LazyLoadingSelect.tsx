@@ -5,20 +5,20 @@ import styles from './LazyLoadingSelect.module.css';
 import ButtonItem from '../button/Button';
 import { PaginationModel } from '../../models/paginationModel';
 
-interface LazyLoadingSelectProps {
+interface LazyLoadingSelectProps<T> {
   name: string;
   value: string;
   label: string;
   handleLazyLoading: (page: number) => void;
   pagination: PaginationModel;
   handleValueSelection: (value: string) => void;
-  items: any[];
+  items: T[];
   fieldLabel: string;
   fieldValue: string;
   required?: boolean;
 }
 
-const LazyLoadingSelect: React.FC<LazyLoadingSelectProps> = ({
+const LazyLoadingSelect = <T,>({
   name,
   label,
   value,
@@ -29,7 +29,7 @@ const LazyLoadingSelect: React.FC<LazyLoadingSelectProps> = ({
   fieldLabel,
   fieldValue,
   required,
-}) => {
+}: LazyLoadingSelectProps<T>) => {
   return (
     <FormControl>
       {!value && <InputLabel id={`${name}-select-label`}>{label}</InputLabel>}
@@ -49,7 +49,7 @@ const LazyLoadingSelect: React.FC<LazyLoadingSelectProps> = ({
         value={value}
         onOpen={() => handleLazyLoading(1)}
         onChange={(event) => {
-          handleValueSelection(event.target.value as string);
+          handleValueSelection(String(event.target.value));
         }}
       >
         <MenuItem value="">None</MenuItem>

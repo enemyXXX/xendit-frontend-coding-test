@@ -6,11 +6,12 @@ import { ModalActions } from '../../../../shared/components/modal/Modal';
 import ButtonItem from '../../../../shared/components/button/Button';
 import { Box, TextField } from '@mui/material';
 import { useAppDispatch } from '../../../../shared/hooks/useAppDispatch';
-import { CountriesList } from '../../../../shared/models/countryModel';
+import { CountriesList, CountryModel } from '../../../../shared/models/countryModel';
 import { useAppSelector } from '../../../../shared/hooks/useAppSelector';
 import { getCountriesAsync, getCreateEditCountries } from '../../services/mainSlice';
 import { PER_PAGE } from '../../../../global/constants/pagination';
 import LazyLoadingSelect from '../../../../shared/components/select/LazyLoadingSelect';
+import { GlobalUtils } from '../../../../shared/utils/globalUtils';
 
 interface UniversityCreateEditFormProps {
   university: UniversityModel;
@@ -19,9 +20,26 @@ interface UniversityCreateEditFormProps {
 }
 
 const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ university, handleClose, handleSave }) => {
+  const dispatch = useAppDispatch();
   const [universityItem, setUniversityItem] = useState<UniversityModel>(university);
   const [isActiveUniversityProcess, setIsActiveUniversityProcess] = useState<boolean>(false);
   const isSaveDisable: boolean = useMemo(() => !universityItem.name || !universityItem.country, [universityItem]);
+  const countries: CountriesList = useAppSelector(getCreateEditCountries);
+
+  const countriesList = useMemo(
+    () =>
+      GlobalUtils.removeDuplicateArrayRecords(
+        [
+          {
+            id: 1,
+            name: universityItem.country,
+          },
+          ...countries.data,
+        ],
+        'name'
+      ),
+    [countries.data]
+  );
 
   const handleSaveValidation = () => {
     setIsActiveUniversityProcess(true);
@@ -31,16 +49,13 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
     });
   };
 
-  const dispatch = useAppDispatch();
-  const countries: CountriesList = useAppSelector(getCreateEditCountries);
-
   const handleCountriesLoading = (page: number) => {
     if (page > countries.pagination.current_page) {
       dispatch(
         getCountriesAsync({
           editMode: true,
           page,
-          pageSize: PER_PAGE,
+          limit: PER_PAGE,
         })
       );
     }
@@ -57,13 +72,13 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
               onChange={(e) =>
                 setUniversityItem((prev) => ({
                   ...prev,
-                  name: e.target.value as string,
+                  name: String(e.target.value),
                 }))
               }
               required
               label="Name"
             />
-            <LazyLoadingSelect
+            <LazyLoadingSelect<CountryModel>
               label={'Country *'}
               required
               name={'countries'}
@@ -76,26 +91,26 @@ const UniversityCreateEditForm: React.FC<UniversityCreateEditFormProps> = ({ uni
                   country: value,
                 })
               }
-              items={countries.data}
+              items={countriesList}
               fieldLabel={'name'}
               fieldValue={'name'}
             />
             <TextField
-              value={universityItem.domains.join(',')}
+              value={GlobalUtils.joinArray<string>(universityItem.domains)}
               onChange={(e) =>
                 setUniversityItem((prev) => ({
                   ...prev,
-                  domains: (e.target.value as string).split(','),
+                  domains: GlobalUtils.splitString(String(e.target.value)),
                 }))
               }
               label="Domain"
             />
             <TextField
-              value={universityItem.web_pages.join(',')}
+              value={GlobalUtils.joinArray<string>(universityItem.web_pages)}
               onChange={(e) =>
                 setUniversityItem((prev) => ({
                   ...prev,
-                  web_pages: (e.target.value as string).split(','),
+                  web_pages: GlobalUtils.splitString(String(e.target.value)),
                 }))
               }
               label="Web Pages"

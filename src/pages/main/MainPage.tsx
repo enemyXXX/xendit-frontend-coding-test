@@ -19,7 +19,7 @@ import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, TextFiel
 import { MoreVert, Search } from '@mui/icons-material';
 import { UniversitiesList, UniversityModel } from '../../shared/models/universityModel';
 import { Select } from '@material-ui/core';
-import { CountriesList } from '../../shared/models/countryModel';
+import { CountriesList, CountryModel } from '../../shared/models/countryModel';
 import ButtonItem from '../../shared/components/button/Button';
 import CustomModal, { ModalActions } from '../../shared/components/modal/Modal';
 import EditIcon from '@mui/icons-material/Edit';
@@ -43,8 +43,8 @@ const MainPage: React.FC = () => {
   const [universityDeleteModalOpened, setUniversityDeleteModalOpened] = useState<boolean>(false);
   const [rowsState, setRowsState] = React.useState<RowsState>({
     page: 1,
-    pageSize: PER_PAGE,
-    search: '',
+    limit: PER_PAGE,
+    name: '',
     country: '',
     sortField: 'name',
     sortOrder: 'asc',
@@ -52,10 +52,10 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     const searchDelay = setTimeout(() => {
-      rowsState.search !== search &&
+      rowsState.name !== search &&
         setRowsState((prev) => ({
           ...prev,
-          search: search,
+          name: search,
         }));
     }, 500);
 
@@ -70,22 +70,30 @@ const MainPage: React.FC = () => {
     updateTableData(rowsState);
   }, [rowsState]);
 
-  const columns: GridColDef[] = [
-    ...universityTableColumns,
-    {
-      field: 'actions',
-      headerName: '',
-      sortable: false,
-      width: 30,
-      renderCell: (params) => (
-        <>
-          <IconButton aria-label="more" onClick={() => handleMenuClick(params.row)}>
-            <MoreVert />
-          </IconButton>
-        </>
-      ),
-    },
-  ];
+  const handleMenuClick = (row: UniversityModel) => {
+    setSelectedRow(row);
+    setUniversityDetailsModalOpened(true);
+  };
+
+  const columns: GridColDef[] = useMemo(
+    () => [
+      ...universityTableColumns,
+      {
+        field: 'actions',
+        headerName: '',
+        sortable: false,
+        width: 30,
+        renderCell: (params) => (
+          <>
+            <IconButton aria-label="more" onClick={() => handleMenuClick(params.row)}>
+              <MoreVert />
+            </IconButton>
+          </>
+        ),
+      },
+    ],
+    [handleMenuClick]
+  );
 
   const possibleFilters = useMemo(() => columns.filter((column) => column.sortable).map((col) => col.field), [columns]);
 
@@ -105,23 +113,17 @@ const MainPage: React.FC = () => {
   };
 
   const handleCountriesLoading = (page: number) => {
-    if (page > countries.pagination.current_page) {
+    page > countries.pagination.current_page &&
       dispatch(
         getCountriesAsync({
           page,
-          pageSize: PER_PAGE,
+          limit: PER_PAGE,
         })
       );
-    }
-  };
-
-  const handleMenuClick = (row: UniversityModel) => {
-    setSelectedRow(row);
-    setUniversityDetailsModalOpened(true);
   };
 
   const handleDeleteUniversity = () => {
-    if (selectedRow) {
+    selectedRow &&
       dispatch(
         deleteUniversityAsync({
           id: selectedRow.id,
@@ -131,7 +133,6 @@ const MainPage: React.FC = () => {
           },
         })
       );
-    }
   };
 
   const handleSaveUpdatedUniversity = (university: UniversityModel, callback: (success: boolean) => void) => {
@@ -177,7 +178,7 @@ const MainPage: React.FC = () => {
               ),
             }}
           />
-          <LazyLoadingSelect
+          <LazyLoadingSelect<CountryModel>
             label={'Country'}
             name={'country'}
             value={rowsState.country}
@@ -199,7 +200,7 @@ const MainPage: React.FC = () => {
               onChange={(event) => {
                 handleSortChange([
                   {
-                    field: event.target.value as string,
+                    field: String(event.target.value),
                     sort: 'asc',
                   },
                 ]);
@@ -227,11 +228,11 @@ const MainPage: React.FC = () => {
           onSortModelChange={(model) => handleSortChange(model)}
           rowCount={universities.pagination.total}
           columns={columns}
-          pageSize={rowsState.pageSize}
+          pageSize={rowsState.limit}
           loading={isUniversitiesLoading}
           rowsPerPageOptions={[5, 10, 15]}
           checkboxSelection
-          onPageSizeChange={(pageSize) => setRowsState((prev) => ({ ...prev, pageSize }))}
+          onPageSizeChange={(pageSize) => setRowsState((prev) => ({ ...prev, limit: pageSize }))}
           onPageChange={(page) => setRowsState((prev) => ({ ...prev, page: page + 1 }))}
           disableSelectionOnClick
           paginationMode={'server'}

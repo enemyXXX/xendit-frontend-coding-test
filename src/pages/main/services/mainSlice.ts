@@ -8,7 +8,8 @@ import { initialPaginationModel } from '../../../global/constants/pagination';
 import { UniversitiesList, UniversityModel } from '../../../shared/models/universityModel';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { toast } from 'react-toastify';
-import { removeToastWithDelay } from '../../../shared/utils/toast';
+import { removeToastWithDelay } from '../../../shared/utils/toastUtils';
+import { FilterUtils } from '../../../shared/utils/filterUtils';
 
 export interface MainState {
   countries: CountriesList;
@@ -40,16 +41,19 @@ const initialState: MainState = {
 
 interface getCountriesData {
   page: number;
-  pageSize: number;
+  limit: number;
   editMode?: boolean;
 }
 
 export const getCountriesAsync = createAsyncThunk('main/getCountries', async (props: getCountriesData) => {
   try {
-    const { page, pageSize, editMode } = props;
-    const { data } = await axios.get(
-      MainEndpoints.GET_COUNTRIES_ENDPOINT.replace('{page}', String(page)).replace('{limit}', String(pageSize))
-    );
+    const { page, limit, editMode } = props;
+    const { data } = await axios.get(MainEndpoints.GET_COUNTRIES_ENDPOINT, {
+      params: FilterUtils.getQueryParams({
+        page,
+        limit,
+      }),
+    });
     return {
       editMode,
       data: data.data,
@@ -63,14 +67,17 @@ export const getCountriesAsync = createAsyncThunk('main/getCountries', async (pr
       },
     };
   } catch (err) {
-    console.log(err);
+    toast(`Something wrong during countries loading`, {
+      type: 'error',
+      theme: 'colored',
+    });
   }
 });
 
 interface GetUniversitiesData {
   page: number;
-  pageSize: number;
-  search: string;
+  limit: number;
+  name: string;
   country: string;
   sortField?: string;
   sortOrder: GridSortDirection;
@@ -78,21 +85,16 @@ interface GetUniversitiesData {
 
 export const getUniversitiesAsync = createAsyncThunk('main/getUniversities', async (props: GetUniversitiesData) => {
   try {
-    const { page, pageSize, sortField, sortOrder, search, country } = props;
-    let endpoint = MainEndpoints.GET_UNIVERSITIES_ENDPOINT.replace('{page}', String(page)).replace(
-      '{limit}',
-      String(pageSize)
-    );
-    if (sortField) {
-      endpoint += `&sort=${sortField},${sortOrder}`;
-    }
-    if (search) {
-      endpoint += `&name=${search}`;
-    }
-    if (country) {
-      endpoint += `&country=${country}`;
-    }
-    const { data } = await axios.get(endpoint);
+    const { page, limit, sortField, sortOrder, name, country } = props;
+    const { data } = await axios.get(MainEndpoints.UNIVERSITY_ENDPOINT, {
+      params: FilterUtils.getQueryParams({
+        page,
+        limit,
+        sort: FilterUtils.getSortValue(sortField, sortOrder),
+        name,
+        country,
+      }),
+    });
     return {
       data: data.data,
       pagination: {
@@ -105,7 +107,10 @@ export const getUniversitiesAsync = createAsyncThunk('main/getUniversities', asy
       } as PaginationModel,
     } as UniversitiesList;
   } catch (err) {
-    console.log(err);
+    toast(`Something wrong during universities loading`, {
+      type: 'error',
+      theme: 'colored',
+    });
   }
 });
 
