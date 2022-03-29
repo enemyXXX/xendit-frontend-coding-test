@@ -31,7 +31,7 @@ const App: React.FC = () => {
         </Box>
       </BrowserRouter>
       <ToastContainer
-        autoClose={5000}
+        autoClose={4000}
         hideProgressBar
         draggable
         theme={'colored'}
